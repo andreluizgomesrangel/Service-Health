@@ -88,7 +88,6 @@ public class RequisicaoDao {
 		             
 		             
 		             historic.setTime(date);
-		             //System.out.println("SEEEEEEEEEET DAAAAAAAAAAATE: "+date);
 		             // montando a data através do Calendar
 		             /*Calendar data = Calendar.getInstance();
 		             data.setTime(rs.getDate("time"));
