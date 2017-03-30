@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,25 @@ public class ServiceDao {
 		     }
 		 }
 	
+	   
+	   public void updateTime(long id,  Timestamp time) {
+		     String sql = "update service set lastRequest=? " +
+		             "where id=?";
+		     try {
+		         PreparedStatement stmt = connection.prepareStatement(sql);
+		         
+		         stmt.setTimestamp(1, time );
+		         
+		         stmt.setLong(2, id);
+		         
+		         stmt.execute();
+		         stmt.close();
+		     } catch (SQLException e) {
+		         throw new RuntimeException(e);
+		     }
+		 }
+	   
+	   
 	   public void update(Service service) {
 		     String sql = "update service set name=?, requestType=?, param=?, " +
 		             "url=? where id=?";

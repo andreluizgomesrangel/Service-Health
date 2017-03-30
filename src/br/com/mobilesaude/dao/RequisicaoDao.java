@@ -39,18 +39,12 @@ public class RequisicaoDao {
 		         stmt.setInt(4,req.getResponse());
 		         stmt.setLong(5,req.getRequisicao());
 		         
-		         
-		         
-		       
 		         Date date = new Date();
-		         //Calendar cal = new GregorianCalendar();
-		         
-		         
 		         Timestamp timestamp = new Timestamp(date.getTime());
-		        // preparedStatement = connection.prepareStatement("SELECT * FROM tbl WHERE ts > ?");
-		        // preparedStatement.setTimestamp(1, timestamp);
-		         
 		         stmt.setTimestamp(6, timestamp );
+		         
+		         ServiceDao sdao = new ServiceDao();
+		         sdao.updateTime( req.getIdService(), timestamp );
 		         
 		         // executa
 		         stmt.execute();
