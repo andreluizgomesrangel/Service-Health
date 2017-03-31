@@ -98,5 +98,49 @@ public class RequisicaoDao {
 		     }
 		 }
 	   
+	   public List<Requisicao> getDay( String day, long id ) {
+		   
+		     try {
+		         List<Requisicao> historics = new ArrayList<Requisicao>();
+		         PreparedStatement stmt = this.connection.
+		        		 
+		         prepareStatement("select * from requisicao WHERE idService='"+id+"' AND DATE(requisicao.time) = '"+day+"'");
+		         ResultSet rs = stmt.executeQuery();
+		 
+		         while (rs.next()) {
+		             // criando o objeto Contato
+		             Requisicao historic = new Requisicao();
+		             historic.setId(rs.getLong("id"));
+		             historic.setIdService(rs.getLong("idService"));
+		             historic.setDetails(rs.getString("details"));
+		             historic.setResponse(rs.getInt("response"));
+		             historic.setRequisicao(rs.getLong("requisicao"));
+		             
+		             
+		             
+		             
+		             
+		             Timestamp timestamp = rs.getTimestamp("time");
+		             java.util.Date date = timestamp; // You can just upcast.
+		             
+		             
+		             historic.setTime(date);
+		             // montando a data através do Calendar
+		             /*Calendar data = Calendar.getInstance();
+		             data.setTime(rs.getDate("time"));
+		             historic.setTime(data);*/
+		 
+		             // adicionando o objeto à lista
+		             historics.add(historic);
+		         }
+		         rs.close();
+		         stmt.close();
+		         return historics;
+		     } catch (SQLException e) {
+		         throw new RuntimeException(e);
+		     }
+		 }
+	   
+	   
 	   
 }
