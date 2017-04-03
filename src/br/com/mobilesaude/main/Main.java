@@ -16,11 +16,35 @@ public class Main {
 	
 	public static void main(String[] args){
 	
-		Status_History s = new Status_History();
-		s.getS().setId(8);
-		//s.getOneDay("2017/03/31");
+		ServiceDao sdao = new ServiceDao();
+		List<Service> services = sdao.getLista();
 		
-		System.out.println(s.getTodayString()+" "+ s.getOneDay("2017/03/31") );
+		int qtdServices = services.size();
+		int qtdDias = 11;
+		
+		Calendar d = Calendar.getInstance();
+		
+		Status_History []status = new Status_History[qtdServices];
+		
+		for( int i=0; i<qtdServices; i++ ){
+			
+			status[i] = new Status_History( services.get(i).getId() , qtdDias );
+			
+		}
+		
+
+		for( int i=0; i<qtdDias; i++  ){
+			System.out.print( "  | "+status[0].dataToStringBR(d));
+			d.add(Calendar.DATE, -1);
+		}
+		
+		for( int j=0; j<qtdServices; j++ ){
+			System.out.println();
+			int []dia = status[j].getDia();
+			for(int i=0; i<dia.length; i++){
+				System.out.print( "       "+dia[i]+" " );
+			}
+		}
 		
 	}
 }

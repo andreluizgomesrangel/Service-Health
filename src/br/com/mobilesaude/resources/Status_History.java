@@ -17,97 +17,77 @@ import br.com.mobilesaude.dao.RequisicaoDao;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Status_History {
 
-	Service s = new Service(); 
-	boolean []dia = new boolean[11];
 	
+	int []dia;
 	
-	private List<String> dias = new ArrayList();
-	private Date today;
+	private Calendar today = Calendar.getInstance();
 	private String todayString;
 	
 	
-	public Status_History(){
-		
-		today = Calendar.getInstance().getTime();        
-		todayString = dataToString(today);
-		
-		/*for(int i=0; i<11; i++){
-			dias.add("2017/03/"+(31-i));
-		}*/
-		
+	
+	public Status_History( long id, int n ){
+		dia = new int[n];
+		verifDias( id, n );
 	}
 	
 	
-	public String dataToString(Date d){
+	/*
+	 * Verificar getOneDay para o servico de id por n dias a partir de ontem
+	 */
+	
+	public void verifDias( long id, int n ){
+		
+		for(int i=0; i<n;i++){
+			today.add(Calendar.DATE, -1);
+			String dayString = dataToString(today);
+			int v = getOneDay( id, dayString );
+			dia[i] = v;
+			//System.out.println("DIIIIIIAAAAA: "+today.getTime()+" >>>> "+v);
+		}
+	}
+	
+	public String dataToString(Calendar c){
 		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-		//d = Calendar.getInstance().getTime();        
-		String reportDate = df.format(d);
+		String reportDate = df.format(c.getTime());
 		return reportDate;
 	}
 	
-	public boolean getOneDay( String day ){
+	public String dataToStringBR(Calendar c){
+		DateFormat df = new SimpleDateFormat("dd/MM");
+		String reportDate = df.format(c.getTime());
+		return reportDate;
+	}
+	
+	//obter verificacao (-1/1/0) para requisicoes (erro/sem erro/sem requisicao) de um dia
+	public int getOneDay( long id, String day ){
 		
 		List<Requisicao> reqDia = new ArrayList<Requisicao>();
 		RequisicaoDao rdao = new RequisicaoDao();
-		reqDia = rdao.getDay( day, s.getId() );
+		reqDia = rdao.getDay( day, id );
 		
 		if(reqDia.size()>0){
 			for( Requisicao r : reqDia ){
 				if( r.getResponse()!=200 ){
-					return false;
+					return -1;
 				}
 			}
-		}else{
-			System.out.println("LIIIIIIIISSTAAA VAZIAAAAAA");
+			return 1;
 		}
 		
-		return true; 
-	}
+		return 0;
+	}	
 
-	
-	
-	
-	public Service getS() {
-		return s;
-	}
-
-	public void setS(Service s) {
-		this.s = s;
-	}
-
-	public boolean[] getDia() {
+	public int[] getDia() {
 		return dia;
 	}
 
-	public void setDia(boolean[] dia) {
+	public void setDia(int[] dia) {
 		this.dia = dia;
 	}
-
-
-	public List<String> getDias() {
-		return dias;
-	}
-
-
-	public void setDias(List<String> dias) {
-		this.dias = dias;
-	}
-
-
-	public Date getToday() {
-		return today;
-	}
-
-
-	public void setToday(Date today) {
-		this.today = today;
-	}
-
 
 	public String getTodayString() {
 		return todayString;
 	}
-
 
 	public void setTodayString(String todayString) {
 		this.todayString = todayString;
