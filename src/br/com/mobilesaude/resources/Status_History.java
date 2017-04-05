@@ -19,10 +19,13 @@ public class Status_History {
 
 	
 	int []dia;
-	
 	private Calendar today = Calendar.getInstance();
 	private String todayString;
 	
+	
+	public Status_History(){
+		
+	}
 	
 	
 	public Status_History( long id, int n ){

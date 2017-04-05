@@ -1,5 +1,6 @@
 package br.com.mobilesaude.ws;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -47,8 +48,8 @@ public class RequisicaoWs {
 	@Path("/insert")
 	@Produces( MediaType.APPLICATION_XML)
 	public List<Requisicao> insert(@FormParam("idService") long idService,
-								 @FormParam("response") int response,
-								 @FormParam("request") long request
+									 @FormParam("response") int response,
+									 @FormParam("request") long request
 								){
 		RequisicaoDao hdao = new RequisicaoDao();
 		List<Requisicao> list = hdao.getLista();
@@ -67,6 +68,23 @@ public class RequisicaoWs {
 		h.setId( lastId + 1 );
 		hdao.add(h);
 		return hdao.getLista();
+	}
+	
+	@POST
+	@Path("/getDay")
+	@Produces( MediaType.APPLICATION_XML)
+	public List<Requisicao> getDay( @FormParam("day") String day,
+			 						@FormParam("id") long id ){
+		RequisicaoDao hdao = new RequisicaoDao();
+		List<Requisicao> list = hdao.getDay( day, id );
+		
+		if( list==null ){
+			return new ArrayList<Requisicao>();
+		}
+		if( list.size() == 0){
+			return  new ArrayList<Requisicao>();
+		}
+		else return list;
 	}
 	
 }
