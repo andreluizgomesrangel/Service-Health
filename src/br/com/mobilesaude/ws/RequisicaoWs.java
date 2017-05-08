@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import br.com.mobilesaude.dao.RequisicaoDao;
 import br.com.mobilesaude.dao.ServiceDao;
+import br.com.mobilesaude.resources.LastRequest;
 import br.com.mobilesaude.resources.Requisicao;
 import br.com.mobilesaude.resources.Service;
 
@@ -44,6 +45,24 @@ public class RequisicaoWs {
 		return list;
 	}
 	
+	@GET
+	@Path("/getLastOnes")
+	@Produces( MediaType.APPLICATION_XML)
+	public List<LastRequest> getLast( ){
+		RequisicaoDao hdao = new RequisicaoDao();
+		List<LastRequest> list = hdao.getLastRequests();
+		
+		if( list==null ){
+			return null;
+		}
+		if(list.get(0) == null){
+			return null;
+		}
+		
+		return list;
+	}
+	
+	
 	@POST
 	@Path("/insert")
 	@Produces( MediaType.APPLICATION_XML)
@@ -56,7 +75,7 @@ public class RequisicaoWs {
 		Requisicao h = new Requisicao();
 		h.setIdService(idService);
 		h.setResponse(response);
-		h.setRequisicao(request);
+		//h.setRequisicao(request);
 		
 		if( list.size()==0){
 			h.setId(1);

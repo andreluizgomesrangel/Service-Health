@@ -77,6 +77,35 @@ public class ServiceDao {
 		     }
 		 }
 	
+	   public Service getService( long id ) {
+		   System.out.println(">>>>>>>>>>> ACESSANDO BANCO DE DADOS DE SERVICO PARA ACHAR O ID ESPECIFICO <<<<<<<<<<<<");
+		     try {
+		         PreparedStatement stmt = this.connection.
+		         prepareStatement("select * from service where id="+id);
+		         System.out.println(">>>>>>>>>>> PREPARED STMT FOR ID="+id+" <<<<<<<<<<<<");
+		         //stmt.setLong(1, id);
+		         
+		         ResultSet rs = stmt.executeQuery();
+		         System.out.println(">>>>>>>>>>> RS EXECUTADO <<<<<<<<<<<<");
+		         rs.next();
+		         System.out.println(">>>>>>>>>>> RS.NEXT <<<<<<<<<<<<");
+		         
+		         // criando o objeto Contato
+	             Service service = new Service();
+	             service.setId(rs.getLong("id"));
+	             service.setName(rs.getString("name"));
+	             service.setUrl(rs.getString("url"));
+	             service.setRequestType(rs.getString("requestType"));
+	             service.setParam(rs.getString("param"));
+		             
+		         rs.close();
+		         stmt.close();
+		         System.out.println(">>>>>>>>>>> FINALIZANDO ACESSO BANCO DE DADOS DE SERVICO  <<<<<<<<<<<<");
+		         return service;
+		     } catch (SQLException e) {
+		         throw new RuntimeException(e);
+		     }
+		 }
 	   
 	   public void updateTime(long id,  Timestamp time) {
 		     String sql = "update service set lastRequest=? " +

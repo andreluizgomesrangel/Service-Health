@@ -25,7 +25,7 @@ public class ServiceWs {
 	}
 	
 	@GET
-	@Path("/getlist")
+	@Path("/getlistById")
 	@Produces( MediaType.APPLICATION_XML)
 	public List<Service> getList( ){
 		ServiceDao sdao = new ServiceDao();
@@ -37,9 +37,10 @@ public class ServiceWs {
 		if(list.get(0) == null){
 			return null;
 		}
-		
 		return list;
 	}
+	
+	
 	
 	@POST
 	@Path("/insert")

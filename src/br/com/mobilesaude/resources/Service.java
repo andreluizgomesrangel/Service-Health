@@ -13,10 +13,12 @@ public class Service {
 
 	private long id;
 	private String name;
-	
 	private String url;
 	private String requestType;
 	private String param;
+	private List<Requisicao> requisicoes;
+	
+	
 	
 	public long getId() {
 		return id;
@@ -51,6 +53,13 @@ public class Service {
 	
 	public void show(){
 		System.out.println( url+" "+param+" "+requestType );
+	}
+	
+	public List<Requisicao> getRequisicoes() {
+		return requisicoes;
+	}
+	public void setRequisicoes(List<Requisicao> requisicoes) {
+		this.requisicoes = requisicoes;
 	}
 	
 	

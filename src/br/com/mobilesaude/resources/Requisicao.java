@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import br.com.mobilesaude.dao.ServiceDao;
+
 @XmlRootElement(name = "requisicao")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Requisicao {
@@ -16,9 +18,6 @@ public class Requisicao {
 	private Date time;
 	private String details;
 	private int response;
-	
-	private Service service;
-	
 	private long requisicao;
 	
 	public long getId() {
@@ -65,15 +64,8 @@ public class Requisicao {
 		if( response == 504 ){
 			setDetails("Gateway Time-out");
 		}
-
 		
 		this.response = response;
-	}
-	public Service getService() {
-		return service;
-	}
-	public void setService(Service service) {
-		this.service = service;
 	}
 	public long getRequisicao() {
 		return requisicao;
@@ -81,6 +73,7 @@ public class Requisicao {
 	public void setRequisicao(long requisicao) {
 		this.requisicao = requisicao;
 	}
+
 	
 	
 }
