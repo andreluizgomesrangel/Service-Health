@@ -11,7 +11,5 @@ public class Dao {
 	   public Dao() {
 		   this.connection = new ConnectionFactory().getConnection();
 	   }
-	   
-	   
 	
 }

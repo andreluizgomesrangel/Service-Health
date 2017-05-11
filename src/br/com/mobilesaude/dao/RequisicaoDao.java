@@ -64,22 +64,22 @@ public class RequisicaoDao {
 	   
 	   public void add( Requisicao req ) {
 		     String sql = "insert into requisicao " +
-		             "(id,idService,details,response,requisicao,time)" +
-		             " values (?,?,?,?,?,?)";
+		             "(idService,details,response,requisicao,time)" +
+		             " values (?,?,?,?,?)";
+		    // System.out.println(">>> insert dao");
 		     try {
 		         // prepared statement para inserção
 		         PreparedStatement stmt = connection.prepareStatement(sql);
 		 
 		         // seta os valores
-		         stmt.setLong(1,req.getId());
-		         stmt.setLong(2,req.getIdService());
-		         stmt.setString(3,req.getDetails());
-		         stmt.setInt(4,req.getResponse());
-		         stmt.setLong(5,req.getRequisicao());
+		         stmt.setLong(1,req.getIdService());
+		         stmt.setString(2,req.getDetails());
+		         stmt.setInt(3,req.getResponse());
+		         stmt.setLong(4,req.getRequisicao());
 		         
 		         Date date = new Date();
 		         Timestamp timestamp = new Timestamp(date.getTime());
-		         stmt.setTimestamp(6, timestamp );
+		         stmt.setTimestamp(5, timestamp );
 		         
 		         ServiceDao sdao = new ServiceDao();
 		         sdao.updateTime( req.getIdService(), timestamp );

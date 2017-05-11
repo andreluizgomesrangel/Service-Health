@@ -19,7 +19,17 @@ public class Main {
 	public static void main(String[] args){
 
 		
+		ServiceDao sdao = new ServiceDao();
+		List<Service> slist = sdao.getLista();
+		//System.out.println(slist.size());
 		
+		RequisicaoDao rdao = new RequisicaoDao();
+		
+		Requisicao r = new Requisicao();
+		r.setIdService(100);
+		r.setResponse(200);
+		r.setRequisicao(22000);
+		rdao.add(r);
 		
 	}
 }

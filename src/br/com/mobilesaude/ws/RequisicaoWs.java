@@ -66,27 +66,15 @@ public class RequisicaoWs {
 	@POST
 	@Path("/insert")
 	@Produces( MediaType.APPLICATION_XML)
-	public List<Requisicao> insert(@FormParam("idService") long idService,
-									 @FormParam("response") int response,
-									 @FormParam("request") long request
-								){
+	public Requisicao insert(@FormParam("idService") long idService,
+							 @FormParam("response") int response ){
+		//System.out.println(">>> insert ws");
 		RequisicaoDao hdao = new RequisicaoDao();
-		List<Requisicao> list = hdao.getLista();
 		Requisicao h = new Requisicao();
 		h.setIdService(idService);
 		h.setResponse(response);
-		//h.setRequisicao(request);
-		
-		if( list.size()==0){
-			h.setId(1);
-			hdao.add(h);
-			return hdao.getLista();
-		}
-		
-		long lastId = list.get( list.size() - 1 ).getId();
-		h.setId( lastId + 1 );
 		hdao.add(h);
-		return hdao.getLista();
+		return h;
 	}
 	
 	@POST

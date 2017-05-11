@@ -61,11 +61,6 @@ public class ServiceDao {
 		             service.setRequestType(rs.getString("requestType"));
 		             service.setParam(rs.getString("param"));
 		             
-		             // montando a data através do Calendar
-		             /*Calendar data = Calendar.getInstance();
-		             data.setTime(rs.getDate("dataNascimento"));
-		             contato.setDataNascimento(data);*/
-		 
 		             // adicionando o objeto à lista
 		             services.add(service);
 		         }
