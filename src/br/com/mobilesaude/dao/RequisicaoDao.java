@@ -158,7 +158,7 @@ public class RequisicaoDao {
 		        		 				+ "INNER JOIN ping.service "
 		        		 				+ "ON ping.service.id=ping.requisicao.idService "
 		        		 				+ "GROUP BY ping.requisicao.idService "
-		        		 				+ "ORDER BY HORA DESC");
+		        		 				+ "ORDER BY ping.service.id ASC");
 		        		 		 
 		         ResultSet rs = stmt.executeQuery();
 		 
