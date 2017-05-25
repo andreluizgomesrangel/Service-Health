@@ -2,6 +2,7 @@ package br.com.mobilesaude.ws;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -16,6 +17,9 @@ import br.com.mobilesaude.resources.Service;
 @Path("/ws/servico/service")
 public class ServiceWs {
 
+	@EJB
+	ServiceDao sdao;
+	
 	@GET
 	@Path("/teste")
 	@Produces( MediaType.APPLICATION_XML)
@@ -28,7 +32,6 @@ public class ServiceWs {
 	@Path("/getlistById")
 	@Produces( MediaType.APPLICATION_XML)
 	public List<Service> getList( ){
-		ServiceDao sdao = new ServiceDao();
 		List<Service> list = sdao.getLista();
 		
 		if( list==null ){
@@ -50,7 +53,6 @@ public class ServiceWs {
 								 @FormParam("requestType") String requestType,
 								 @FormParam("param") String param
 								){
-		ServiceDao sdao = new ServiceDao();
 		List<Service> list = sdao.getLista();
 		Service s = new Service();
 		s.setName(name);
@@ -81,7 +83,6 @@ public class ServiceWs {
 								 @FormParam("requestType") String requestType,
 								 @FormParam("param") String param
 								){
-		ServiceDao sdao = new ServiceDao();
 		List<Service> list = sdao.getLista();
 		
 		Service s = new Service();

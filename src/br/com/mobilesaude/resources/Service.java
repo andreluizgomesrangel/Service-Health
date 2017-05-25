@@ -3,14 +3,22 @@ package br.com.mobilesaude.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+//@Entity
+//@Table(name="service")
 @XmlRootElement(name = "service")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Service {
 
+	@Id
+	@GeneratedValue
 	private long id;
 	private String name;
 	private String url;

@@ -1,5 +1,6 @@
 package br.com.mobilesaude.main;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,20 +17,16 @@ import sun.util.resources.cldr.CalendarData;
 
 public class Main {
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws SQLException{
 
 		
 		ServiceDao sdao = new ServiceDao();
 		List<Service> slist = sdao.getLista();
-		//System.out.println(slist.size());
+		System.out.println(slist.size());
 		
-		RequisicaoDao rdao = new RequisicaoDao();
+		//RequisicaoDao rdao = new RequisicaoDao();
 		
-		Requisicao r = new Requisicao();
-		r.setIdService(100);
-		r.setResponse(200);
-		r.setRequisicao(22000);
-		rdao.add(r);
+		
 		
 	}
 }
