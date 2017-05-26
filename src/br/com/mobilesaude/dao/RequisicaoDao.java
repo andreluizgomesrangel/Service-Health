@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,9 +24,12 @@ import br.com.mobilesaude.resources.LastRequest;
 import br.com.mobilesaude.resources.Requisicao;
 import br.com.mobilesaude.resources.Service;
 
+@Stateless
+public class RequisicaoDao{
 
-public class RequisicaoDao extends Dao{
-
+	@Resource(mappedName = "java:/jdbc/WsHealthApp")
+    private DataSource datasource;
+	
 	@EJB
 	ServiceDao sdao;
 	
@@ -37,7 +41,7 @@ public class RequisicaoDao extends Dao{
 
 		try {
 			List<Requisicao> historics = new ArrayList<Requisicao>();
-			PreparedStatement stmt = this.getConnection().
+			PreparedStatement stmt = datasource.getConnection().
 
 					prepareStatement("select * from requisicao");
 			ResultSet rs = stmt.executeQuery();
@@ -72,7 +76,7 @@ public class RequisicaoDao extends Dao{
 		// System.out.println(">>> insert dao");
 		try {
 			// prepared statement para inserção
-			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			PreparedStatement stmt = datasource.getConnection().prepareStatement(sql);
 
 			// seta os valores
 			stmt.setLong(1, req.getIdService());
@@ -98,7 +102,7 @@ public class RequisicaoDao extends Dao{
 
 		try {
 			List<Requisicao> historics = new ArrayList<Requisicao>();
-			PreparedStatement stmt = this.getConnection().
+			PreparedStatement stmt = datasource.getConnection().
 
 					prepareStatement("select * from requisicao WHERE idService='" + id
 							+ "' AND DATE(requisicao.time) = '" + day + "'");
@@ -132,7 +136,7 @@ public class RequisicaoDao extends Dao{
 
 		try {
 			List<LastRequest> req = new ArrayList<LastRequest>();
-			PreparedStatement stmt = getConnection().prepareStatement("SET sql_mode = ''");
+			PreparedStatement stmt = datasource.getConnection().prepareStatement("SET sql_mode = ''");
 			ResultSet rs = stmt.executeQuery();
 
 			rs.close();
@@ -149,7 +153,7 @@ public class RequisicaoDao extends Dao{
 			List<LastRequest> req = new ArrayList<LastRequest>();
 			
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT GRP.ID AS ID, GRP.NOME AS NOME, GRP.TIPO AS TIPO , req.details AS RESPOSTA, req.time AS HORA ");
+			sql.append("SELECT GRP.ID AS ID, GRP.NOME AS NOME, GRP.TIPO AS TIPO , req.details AS RESPOSTA, req.time AS HORA, req.response AS RCODE ");
 			sql.append("FROM ( ");
 			sql.append("SELECT service.id AS ID, service.name AS NOME, service.requestType AS TIPO, MAX(ping.requisicao.id) as idrequisicao FROM ping.service ");
 			sql.append("INNER JOIN ping.requisicao ");
@@ -158,7 +162,7 @@ public class RequisicaoDao extends Dao{
 			sql.append("Requisicao req ");
 			sql.append("where grp.idrequisicao = req.id ");
 			
-			PreparedStatement stmt = getConnection().prepareStatement(sql.toString());
+			PreparedStatement stmt = datasource.getConnection().prepareStatement(sql.toString());
 
 			ResultSet rs = stmt.executeQuery();
 

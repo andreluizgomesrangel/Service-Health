@@ -3,6 +3,7 @@ package br.com.mobilesaude.ws;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,6 +21,9 @@ import br.com.mobilesaude.resources.Service;
 @Path("/ws/servico/requisicao")
 public class RequisicaoWs {
 
+	@EJB
+	RequisicaoDao hdao;
+	
 	@GET
 	@Path("/teste")
 	@Produces( MediaType.APPLICATION_XML)
@@ -32,7 +36,7 @@ public class RequisicaoWs {
 	@Path("/getList")
 	@Produces( MediaType.APPLICATION_XML)
 	public List<Requisicao> getList( ){
-		RequisicaoDao hdao = new RequisicaoDao();
+		//RequisicaoDao hdao = new RequisicaoDao();
 		List<Requisicao> list = hdao.getLista();
 		
 		if( list==null ){
@@ -49,7 +53,7 @@ public class RequisicaoWs {
 	@Path("/getLastOnes")
 	@Produces( MediaType.APPLICATION_XML)
 	public List<LastRequest> getLast( ){
-		RequisicaoDao hdao = new RequisicaoDao();
+		//RequisicaoDao hdao = new RequisicaoDao();
 		List<LastRequest> list = hdao.getLastRequests();
 		
 		if( list==null ){
@@ -69,7 +73,7 @@ public class RequisicaoWs {
 	public Requisicao insert(@FormParam("idService") long idService,
 							 @FormParam("response") int response ){
 		//System.out.println(">>> insert ws");
-		RequisicaoDao hdao = new RequisicaoDao();
+		//RequisicaoDao hdao = new RequisicaoDao();
 		Requisicao h = new Requisicao();
 		h.setIdService(idService);
 		h.setResponse(response);
@@ -82,7 +86,7 @@ public class RequisicaoWs {
 	@Produces( MediaType.APPLICATION_XML)
 	public List<Requisicao> getDay( @FormParam("day") String day,
 			 						@FormParam("id") long id ){
-		RequisicaoDao hdao = new RequisicaoDao();
+		//RequisicaoDao hdao = new RequisicaoDao();
 		List<Requisicao> list = hdao.getDay( day, id );
 		
 		if( list==null ){

@@ -51,8 +51,8 @@ public class ServiceDao {
 		try {
 			List<Service> services = new ArrayList<Service>();
 			PreparedStatement stmt = datasource.getConnection().
-
 					prepareStatement("select * from service");
+			
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
