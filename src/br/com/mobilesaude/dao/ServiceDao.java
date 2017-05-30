@@ -23,8 +23,8 @@ import br.com.mobilesaude.resources.Service;
 public class ServiceDao {
 
 	@Resource(mappedName = "java:/jdbc/WsHealthApp")
-    private DataSource datasource;
-	
+	private DataSource datasource;
+
 	public void add(Service service) {
 		String sql = "insert into service " + "(id,name,url,requestType,param)" + " values (?,?,?,?,?)";
 		try {
@@ -50,9 +50,8 @@ public class ServiceDao {
 
 		try {
 			List<Service> services = new ArrayList<Service>();
-			PreparedStatement stmt = datasource.getConnection().
-					prepareStatement("select * from service");
-			
+			PreparedStatement stmt = datasource.getConnection().prepareStatement("select * from service");
+
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -77,7 +76,8 @@ public class ServiceDao {
 
 	public Service getService(long id) {
 		try {
-			PreparedStatement stmt = datasource.getConnection().prepareStatement("select * from service where id=" + id);
+			PreparedStatement stmt = datasource.getConnection()
+					.prepareStatement("select * from service where id=" + id);
 
 			ResultSet rs = stmt.executeQuery();
 			rs.next();

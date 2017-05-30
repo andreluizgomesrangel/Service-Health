@@ -72,8 +72,6 @@ public class RequisicaoWs {
 	@Produces( MediaType.APPLICATION_XML)
 	public Requisicao insert(@FormParam("idService") long idService,
 							 @FormParam("response") int response ){
-		//System.out.println(">>> insert ws");
-		//RequisicaoDao hdao = new RequisicaoDao();
 		Requisicao h = new Requisicao();
 		h.setIdService(idService);
 		h.setResponse(response);
