@@ -8,11 +8,12 @@ import br.com.mobilesaude.resources.Service;
 
 public class Pipeline implements Runnable {
 	Service s;
+	@EJB
 	Requisicoes clienteRequisicao;
 
-	public Pipeline(Service s) {
-		this.s = s;
-		clienteRequisicao = new Requisicoes();
+	public Pipeline() {
+		
+		//clienteRequisicao = new Requisicoes();
 
 	}
 
@@ -22,6 +23,22 @@ public class Pipeline implements Runnable {
 		System.out.println("executar pipeline service: " + s.getId());
 		 clienteRequisicao.newRequest(s);
 
+	}
+
+	public Service getS() {
+		return s;
+	}
+
+	public void setS(Service s) {
+		this.s = s;
+	}
+
+	public Requisicoes getClienteRequisicao() {
+		return clienteRequisicao;
+	}
+
+	public void setClienteRequisicao(Requisicoes clienteRequisicao) {
+		this.clienteRequisicao = clienteRequisicao;
 	}
 
 }

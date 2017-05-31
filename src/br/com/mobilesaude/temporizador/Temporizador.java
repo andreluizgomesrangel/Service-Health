@@ -18,6 +18,9 @@ public class Temporizador {
 	@EJB
 	ServiceDao dao;
 	List<Service> list = new ArrayList<Service>();
+	
+	@EJB
+	Pipeline pipeline;
 
 	public Temporizador() {
 
@@ -32,8 +35,9 @@ public class Temporizador {
 
 		// System.out.println(list.size());
 		for (Service x : list) {
-
-			Thread t = new Thread(new Pipeline(x));
+			pipeline.setS(x);
+			System.out.println(x.getName());
+			Thread t = new Thread(pipeline);
 			t.start();
 
 		}
