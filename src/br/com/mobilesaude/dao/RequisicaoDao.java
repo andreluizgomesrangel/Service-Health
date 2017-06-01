@@ -39,11 +39,14 @@ public class RequisicaoDao {
 
 	public List<Requisicao> getLista() {
 
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from requisicao");
+
 		try {
 			List<Requisicao> historics = new ArrayList<Requisicao>();
-			PreparedStatement stmt = datasource.getConnection().
 
-					prepareStatement("select * from requisicao");
+			Connection connection = datasource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sql.toString());
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -65,6 +68,7 @@ public class RequisicaoDao {
 			}
 			rs.close();
 			stmt.close();
+			connection.close();
 			return historics;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -94,7 +98,7 @@ public class RequisicaoDao {
 			stmt.close();
 			connection.close();
 
-			//sdao.updateTime(req.getIdService(), timestamp);
+			// sdao.updateTime(req.getIdService(), timestamp);
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -103,12 +107,14 @@ public class RequisicaoDao {
 
 	public List<Requisicao> getDay(String day, long id) {
 
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from requisicao WHERE idService='" + id);
+		sql.append("' AND DATE(requisicao.time) = '" + day + "'");
+
 		try {
 			List<Requisicao> historics = new ArrayList<Requisicao>();
-			PreparedStatement stmt = datasource.getConnection().
-
-					prepareStatement("select * from requisicao WHERE idService='" + id
-							+ "' AND DATE(requisicao.time) = '" + day + "'");
+			Connection connection = datasource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sql.toString());
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -129,6 +135,7 @@ public class RequisicaoDao {
 			}
 			rs.close();
 			stmt.close();
+			connection.close();
 			return historics;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -167,7 +174,8 @@ public class RequisicaoDao {
 			sql.append("Requisicao req ");
 			sql.append("where grp.idrequisicao = req.id ");
 
-			PreparedStatement stmt = datasource.getConnection().prepareStatement(sql.toString());
+			Connection connection = datasource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sql.toString());
 
 			ResultSet rs = stmt.executeQuery();
 
@@ -183,6 +191,7 @@ public class RequisicaoDao {
 			}
 			rs.close();
 			stmt.close();
+			connection.close();
 			return req;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
