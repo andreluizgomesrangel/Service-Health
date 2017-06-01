@@ -50,7 +50,8 @@ public class ServiceDao {
 
 		try {
 			List<Service> services = new ArrayList<Service>();
-			PreparedStatement stmt = datasource.getConnection().prepareStatement("select * from service");
+			Connection connection = datasource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement("select * from service");
 
 			ResultSet rs = stmt.executeQuery();
 
@@ -68,6 +69,7 @@ public class ServiceDao {
 			}
 			rs.close();
 			stmt.close();
+			connection.close();
 			return services;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

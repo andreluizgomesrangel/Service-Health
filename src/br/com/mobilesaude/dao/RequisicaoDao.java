@@ -25,16 +25,16 @@ import br.com.mobilesaude.resources.Requisicao;
 import br.com.mobilesaude.resources.Service;
 
 @Stateless
-public class RequisicaoDao{
+public class RequisicaoDao {
 
 	@Resource(mappedName = "java:/jdbc/WsHealthApp")
-    private DataSource datasource;
-	
+	private DataSource datasource;
+
 	@EJB
 	ServiceDao sdao;
-	
+
 	public RequisicaoDao() {
-		//fullGroupMode();
+		// fullGroupMode();
 	}
 
 	public List<Requisicao> getLista() {
@@ -76,7 +76,8 @@ public class RequisicaoDao{
 		// System.out.println(">>> insert dao");
 		try {
 			// prepared statement para inserção
-			PreparedStatement stmt = datasource.getConnection().prepareStatement(sql);
+			Connection connection = datasource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sql);
 
 			// seta os valores
 			stmt.setLong(1, req.getIdService());
@@ -88,11 +89,13 @@ public class RequisicaoDao{
 			Timestamp timestamp = new Timestamp(date.getTime());
 			stmt.setTimestamp(5, timestamp);
 
-			sdao.updateTime(req.getIdService(), timestamp);
-
 			// executa
-			stmt.execute();
+			stmt.executeUpdate();
 			stmt.close();
+			connection.close();
+
+			//sdao.updateTime(req.getIdService(), timestamp);
+
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -151,17 +154,19 @@ public class RequisicaoDao{
 
 		try {
 			List<LastRequest> req = new ArrayList<LastRequest>();
-			
+
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT GRP.ID AS ID, GRP.NOME AS NOME, GRP.TIPO AS TIPO , req.details AS RESPOSTA, req.time AS HORA, req.response AS RCODE ");
+			sql.append(
+					"SELECT GRP.ID AS ID, GRP.NOME AS NOME, GRP.TIPO AS TIPO , req.details AS RESPOSTA, req.time AS HORA, req.response AS RCODE ");
 			sql.append("FROM ( ");
-			sql.append("SELECT service.id AS ID, service.name AS NOME, service.requestType AS TIPO, MAX(ping.requisicao.id) as idrequisicao FROM ping.service ");
+			sql.append(
+					"SELECT service.id AS ID, service.name AS NOME, service.requestType AS TIPO, MAX(ping.requisicao.id) as idrequisicao FROM ping.service ");
 			sql.append("INNER JOIN ping.requisicao ");
 			sql.append("WHERE service.id = requisicao.idService  ");
 			sql.append("GROUP BY ID, NOME ) GRP, ");
 			sql.append("Requisicao req ");
 			sql.append("where grp.idrequisicao = req.id ");
-			
+
 			PreparedStatement stmt = datasource.getConnection().prepareStatement(sql.toString());
 
 			ResultSet rs = stmt.executeQuery();

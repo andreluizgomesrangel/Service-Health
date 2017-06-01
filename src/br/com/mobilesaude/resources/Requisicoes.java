@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.xml.bind.JAXBException;
 
 import br.com.mobilesaude.dao.RequisicaoDao;
+import br.com.mobilesaude.dao.ServiceDao;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,11 +19,13 @@ import okhttp3.Response;
 
 public class Requisicoes {
 
-	@EJB
+	
+	
 	RequisicaoDao dao;
 
-	public Requisicoes() {
-
+	public Requisicoes(RequisicaoDao requisicaoDao) {
+		dao = requisicaoDao;
+		
 	}
 
 	public int postRequest(Service s) {
