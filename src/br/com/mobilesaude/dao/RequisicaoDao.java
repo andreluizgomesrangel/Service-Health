@@ -109,7 +109,7 @@ public class RequisicaoDao {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select * from requisicao WHERE idService='" + id);
-		sql.append("' AND DATE(requisicao.time) = '" + day + "'");
+		sql.append("' AND DATE(requisicao.time) = '" + day + "' ORDER BY id DESC");
 
 		try {
 			List<Requisicao> historics = new ArrayList<Requisicao>();
