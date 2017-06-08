@@ -20,9 +20,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import br.com.mobilesaude.connection.ConnectionFactory;
+import br.com.mobilesaude.resources.EstatisticasServicoDia;
 import br.com.mobilesaude.resources.LastRequest;
 import br.com.mobilesaude.resources.Requisicao;
 import br.com.mobilesaude.resources.Service;
+import br.com.mobilesaude.resources.TipoDeResposta;
 
 @Stateless
 public class RequisicaoDao {
@@ -118,7 +120,6 @@ public class RequisicaoDao {
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				// criando o objeto Contato
 				Requisicao historic = new Requisicao();
 				historic.setId(rs.getLong("id"));
 				historic.setIdService(rs.getLong("idService"));
@@ -130,7 +131,6 @@ public class RequisicaoDao {
 				java.util.Date date = timestamp; // You can just upcast.
 
 				historic.setTime(date);
-				// adicionando o objeto à lista
 				historics.add(historic);
 			}
 			rs.close();
@@ -142,16 +142,33 @@ public class RequisicaoDao {
 		}
 	}
 
-	public void fullGroupMode() {
+	public EstatisticasServicoDia getEstatisticas(String day, long id, int qtdServicos) {
+		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET
+		// ESTATISTICAS");
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT COUNT(ID) as QTD, RESPONSE FROM (SELECT id AS ID, time AS ");
+		sql.append("HORA, response AS RESPONSE FROM ping.requisicao WHERE idService='" + id + "' ");
+		sql.append("AND DATE(requisicao.time)='" + day + "' ORDER BY RESPONSE, ");
+		sql.append("requisicao.time DESC) tab GROUP BY RESPONSE; ");
 
 		try {
-			List<LastRequest> req = new ArrayList<LastRequest>();
-			PreparedStatement stmt = datasource.getConnection().prepareStatement("SET sql_mode = ''");
+			EstatisticasServicoDia estatistica = new EstatisticasServicoDia(id, day);
+			Connection connection = datasource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sql.toString());
 			ResultSet rs = stmt.executeQuery();
+			List<TipoDeResposta> Respostas = new ArrayList<TipoDeResposta>();
 
+			while (rs.next()) {
+				TipoDeResposta resposta = new TipoDeResposta(rs.getInt("QTD"), rs.getInt("RESPONSE"), qtdServicos);
+				Respostas.add(resposta);
+			}
 			rs.close();
 			stmt.close();
-
+			connection.close();
+			estatistica.setRespostas(Respostas);
+			estatistica.setDia(day);
+			estatistica.setIdService(id);
+			return estatistica;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

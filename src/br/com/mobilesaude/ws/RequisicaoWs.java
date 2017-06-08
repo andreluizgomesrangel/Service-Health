@@ -13,9 +13,16 @@ import javax.ws.rs.core.MediaType;
 
 import br.com.mobilesaude.dao.RequisicaoDao;
 import br.com.mobilesaude.dao.ServiceDao;
+import br.com.mobilesaude.resources.EstatisticasServicoDia;
 import br.com.mobilesaude.resources.LastRequest;
 import br.com.mobilesaude.resources.Requisicao;
 import br.com.mobilesaude.resources.Service;
+
+/**
+ * 
+ * @author AndreLuiz
+ *
+ */
 
 @SuppressWarnings({ "unused" })
 @Path("/ws/servico/requisicao")
@@ -23,77 +30,98 @@ public class RequisicaoWs {
 
 	@EJB
 	RequisicaoDao hdao;
-	
+
+	/**
+	 * 
+	 * @return
+	 */
 	@GET
 	@Path("/teste")
-	@Produces( MediaType.APPLICATION_XML)
-	public Requisicao teste( ){
+	@Produces(MediaType.APPLICATION_XML)
+	public Requisicao teste() {
 		Requisicao h = new Requisicao();
 		return h;
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 */
 	@GET
 	@Path("/getList")
-	@Produces( MediaType.APPLICATION_XML)
-	public List<Requisicao> getList( ){
-		//RequisicaoDao hdao = new RequisicaoDao();
+	@Produces(MediaType.APPLICATION_XML)
+	public List<Requisicao> getList() {
+		// RequisicaoDao hdao = new RequisicaoDao();
 		List<Requisicao> list = hdao.getLista();
-		
-		if( list==null ){
+
+		if (list == null) {
 			return null;
 		}
-		if(list.get(0) == null){
+		if (list.get(0) == null) {
 			return null;
 		}
-		
+
 		return list;
 	}
-	
+
 	@GET
 	@Path("/getLastOnes")
-	@Produces( MediaType.APPLICATION_XML)
-	public List<LastRequest> getLast( ){
-		//RequisicaoDao hdao = new RequisicaoDao();
+	@Produces(MediaType.APPLICATION_XML)
+	public List<LastRequest> getLast() {
+		// RequisicaoDao hdao = new RequisicaoDao();
 		List<LastRequest> list = hdao.getLastRequests();
-		
-		if( list==null ){
+
+		if (list == null) {
 			return null;
 		}
-		if(list.get(0) == null){
+		if (list.get(0) == null) {
 			return null;
 		}
-		
+
 		return list;
 	}
-	
-	
+
+	/**
+	 * 
+	 * @param idService
+	 * @param response
+	 * @return
+	 */
 	@POST
 	@Path("/insert")
-	@Produces( MediaType.APPLICATION_XML)
-	public Requisicao insert(@FormParam("idService") long idService,
-							 @FormParam("response") int response ){
+	@Produces(MediaType.APPLICATION_XML)
+	public Requisicao insert(@FormParam("idService") long idService, @FormParam("response") int response) {
 		Requisicao h = new Requisicao();
 		h.setIdService(idService);
 		h.setResponse(response);
 		hdao.add(h);
 		return h;
 	}
-	
+
+	/**
+	 * 
+	 * @param day
+	 * @param id
+	 * @return
+	 */
 	@POST
 	@Path("/getDay")
-	@Produces( MediaType.APPLICATION_XML)
-	public List<Requisicao> getDay( @FormParam("day") String day,
-			 						@FormParam("id") long id ){
-		//RequisicaoDao hdao = new RequisicaoDao();
-		List<Requisicao> list = hdao.getDay( day, id );
-		
-		if( list==null ){
-			return new ArrayList<Requisicao>();
-		}
-		if( list.size() == 0){
-			return  new ArrayList<Requisicao>();
-		}
-		else return list;
+	@Produces(MediaType.APPLICATION_XML)
+	public EstatisticasServicoDia getDay(@FormParam("day") String day, @FormParam("id") long id) {
+		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET DAY WS:
+		// "+id+" "+day);
+		List<Requisicao> list = hdao.getDay(day, id);
+		EstatisticasServicoDia EstatisticaDoDia = hdao.getEstatisticas(day, id, list.size());
+		EstatisticaDoDia.setRequisicoes(list);
+
+		System.out.println(EstatisticaDoDia.toString());
+
+		return EstatisticaDoDia;
+		/*
+		 * if (list == null) { return new EstatisticasServicoDia(); } if
+		 * (list.size() == 0) { return new EstatisticasServicoDia(); } else
+		 * return EstatisticaDoDia;
+		 */
 	}
-	
+
 }
