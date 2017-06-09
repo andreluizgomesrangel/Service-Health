@@ -114,14 +114,27 @@ public class RequisicaoWs {
 		EstatisticasServicoDia EstatisticaDoDia = hdao.getEstatisticas(day, id, list.size());
 		EstatisticaDoDia.setRequisicoes(list);
 
-		System.out.println(EstatisticaDoDia.toString());
+		//System.out.println(EstatisticaDoDia.toString());
 
 		return EstatisticaDoDia;
-		/*
-		 * if (list == null) { return new EstatisticasServicoDia(); } if
-		 * (list.size() == 0) { return new EstatisticasServicoDia(); } else
-		 * return EstatisticaDoDia;
-		 */
+
+	}
+	
+	
+	@POST
+	@Path("/getDayResponse")
+	@Produces(MediaType.APPLICATION_XML)
+	public EstatisticasServicoDia getDayResponse(@FormParam("day") String day, @FormParam("id") long id, @FormParam("response") int response) {
+		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET DAY WS:
+		// "+id+" "+day);
+		List<Requisicao> list = hdao.getDayResponse(day, id, response);
+		EstatisticasServicoDia EstatisticaDoDia = hdao.getEstatisticas(day, id, list.size());
+		EstatisticaDoDia.setRequisicoes(list);
+
+		//System.out.println(EstatisticaDoDia.toString());
+
+		return EstatisticaDoDia;
+
 	}
 
 }

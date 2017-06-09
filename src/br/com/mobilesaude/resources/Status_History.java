@@ -17,68 +17,64 @@ import br.com.mobilesaude.dao.RequisicaoDao;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Status_History {
 
-	
-	int []dia;
+	int[] dia;
 	private Calendar today = Calendar.getInstance();
 	private String todayString;
-	
-	
-	public Status_History(){
-		
+
+	public Status_History() {
+
 	}
-	
-	
-	public Status_History( long id, int n ){
+
+	public Status_History(long id, int n) {
 		dia = new int[n];
-		verifDias( id, n );
+		verifDias(id, n);
 	}
-	
-	
+
 	/*
 	 * Verificar getOneDay para o servico de id por n dias a partir de ontem
 	 */
-	
-	public void verifDias( long id, int n ){
-		
-		for(int i=0; i<n;i++){
+
+	public void verifDias(long id, int n) {
+
+		for (int i = 0; i < n; i++) {
 			today.add(Calendar.DATE, -1);
 			String dayString = dataToString(today);
-			int v = getOneDay( id, dayString );
+			int v = getOneDay(id, dayString);
 			dia[i] = v;
-			//System.out.println("DIIIIIIAAAAA: "+today.getTime()+" >>>> "+v);
 		}
 	}
-	
-	public String dataToString(Calendar c){
+
+	public String dataToString(Calendar c) {
 		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 		String reportDate = df.format(c.getTime());
 		return reportDate;
 	}
-	
-	public String dataToStringBR(Calendar c){
+
+	public String dataToStringBR(Calendar c) {
 		DateFormat df = new SimpleDateFormat("dd/MM");
 		String reportDate = df.format(c.getTime());
 		return reportDate;
 	}
-	
-	//obter verificacao (-1/1/0) para requisicoes (erro/sem erro/sem requisicao) de um dia
-	public int getOneDay( long id, String day ){
-		
+
+	// obter verificacao (-1/1/0) para requisicoes (erro/sem erro/sem
+	// requisicao) de um dia
+	public int getOneDay(long id, String day) {
+
 		List<Requisicao> reqDia = new ArrayList<Requisicao>();
 		RequisicaoDao rdao = new RequisicaoDao();
-		reqDia = rdao.getDay( day, id );
-		
-		if(reqDia.size()>0){
-			for( Requisicao r : reqDia ){
-				if( r.getResponse()!=200 ){
+		reqDia = rdao.getDay(day, id);
+
+		if (reqDia.size() > 0) {
+			for (Requisicao r : reqDia) {
+				if (r.getResponse() != 200) {
 					return -1;
 				}
 			}
 			return 1;
 		}
-		
+
 		return 0;
-	}	
+	}
 
 	public int[] getDia() {
 		return dia;
@@ -95,7 +91,5 @@ public class Status_History {
 	public void setTodayString(String todayString) {
 		this.todayString = todayString;
 	}
-	
-	
-	
+
 }

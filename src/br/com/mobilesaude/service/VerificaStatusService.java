@@ -15,7 +15,7 @@ public class VerificaStatusService {
 
 	@EJB
 	ServiceDao serviceDao;
-	
+
 	@EJB
 	RequisicaoDao requisicaoDao;
 
@@ -24,7 +24,7 @@ public class VerificaStatusService {
 
 		for (Service x : list) {
 
-			Thread t = new Thread(new Pipeline(x,requisicaoDao));
+			Thread t = new Thread(new Pipeline(x, requisicaoDao));
 			t.start();
 
 		}

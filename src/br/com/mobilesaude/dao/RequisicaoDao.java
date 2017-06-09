@@ -1,4 +1,4 @@
-package br.com.mobilesaude.dao;
+ package br.com.mobilesaude.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -142,6 +142,41 @@ public class RequisicaoDao {
 		}
 	}
 
+	public List<Requisicao> getDayResponse(String day, long id, int response) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from requisicao WHERE idService='" + id);
+		sql.append("' AND DATE(requisicao.time) = '" + day + "'  and response='" + response + "'  ORDER BY id DESC");
+
+		try {
+			List<Requisicao> historics = new ArrayList<Requisicao>();
+			Connection connection = datasource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sql.toString());
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Requisicao historic = new Requisicao();
+				historic.setId(rs.getLong("id"));
+				historic.setIdService(rs.getLong("idService"));
+				historic.setDetails(rs.getString("details"));
+				historic.setResponse(rs.getInt("response"));
+				historic.setRequisicao(rs.getLong("requisicao"));
+
+				Timestamp timestamp = rs.getTimestamp("time");
+				java.util.Date date = timestamp; // You can just upcast.
+
+				historic.setTime(date);
+				historics.add(historic);
+			}
+			rs.close();
+			stmt.close();
+			connection.close();
+			return historics;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public EstatisticasServicoDia getEstatisticas(String day, long id, int qtdServicos) {
 		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET
 		// ESTATISTICAS");

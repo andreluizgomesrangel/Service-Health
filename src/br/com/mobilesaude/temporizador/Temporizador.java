@@ -15,10 +15,10 @@ import br.com.mobilesaude.service.VerificaStatusService;
 
 @Stateless
 public class Temporizador {
-	
+
 	@EJB
 	VerificaStatusService verificaStatus;
-	
+
 	@Schedule(second = "*/60", minute = "*", hour = "*")
 	public void doWork() {
 		verificaStatus.verificarStatus();

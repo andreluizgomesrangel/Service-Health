@@ -30,7 +30,7 @@ public class TipoDeResposta {
 	private String converterDoubleParaDuasCasas(double d) {
 		DecimalFormat df = new DecimalFormat("0.##");
 		String dx = df.format(d);
-		return dx+"%";
+		return dx;
 	}
 
 	public int getQtd() {

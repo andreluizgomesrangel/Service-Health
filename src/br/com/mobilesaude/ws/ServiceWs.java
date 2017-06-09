@@ -19,85 +19,74 @@ public class ServiceWs {
 
 	@EJB
 	ServiceDao sdao;
-	
+
 	@GET
 	@Path("/teste")
-	@Produces( MediaType.APPLICATION_XML)
-	public Service teste( ){
+	@Produces(MediaType.APPLICATION_XML)
+	public Service teste() {
 		Service s = new Service();
 		return s;
 	}
-	
+
 	@GET
 	@Path("/getlistById")
-	@Produces( MediaType.APPLICATION_XML)
-	public List<Service> getList( ){
+	@Produces(MediaType.APPLICATION_XML)
+	public List<Service> getList() {
 		List<Service> list = sdao.getLista();
-		
-		if( list==null ){
+
+		if (list == null) {
 			return null;
 		}
-		if(list.get(0) == null){
+		if (list.get(0) == null) {
 			return null;
 		}
 		return list;
 	}
-	
-	
-	
+
 	@POST
 	@Path("/insert")
-	@Produces( MediaType.APPLICATION_XML)
-	public List<Service> insert( @FormParam("name") String name,
-								 @FormParam("url") String url,
-								 @FormParam("requestType") String requestType,
-								 @FormParam("param") String param
-								){
+	@Produces(MediaType.APPLICATION_XML)
+	public List<Service> insert(@FormParam("name") String name, @FormParam("url") String url,
+			@FormParam("requestType") String requestType, @FormParam("param") String param) {
 		List<Service> list = sdao.getLista();
 		Service s = new Service();
 		s.setName(name);
 		s.setUrl(url);
 		s.setParam(param);
 		s.setRequestType(requestType);
-		
-		if( list.size()==0){
+
+		if (list.size() == 0) {
 			s.setId(1);
 			sdao.add(s);
 			return sdao.getLista();
-			
+
 		}
-		
-		long lastId = list.get( list.size() - 1 ).getId();
-		s.setId( lastId + 1 );
+
+		long lastId = list.get(list.size() - 1).getId();
+		s.setId(lastId + 1);
 		sdao.add(s);
 		return sdao.getLista();
 	}
-	
-	
+
 	@POST
 	@Path("/update")
-	@Produces( MediaType.APPLICATION_XML)
-	public List<Service> insert( @FormParam("id") long id,
-								 @FormParam("name") String name,
-								 @FormParam("url") String url,
-								 @FormParam("requestType") String requestType,
-								 @FormParam("param") String param
-								){
+	@Produces(MediaType.APPLICATION_XML)
+	public List<Service> insert(@FormParam("id") long id, @FormParam("name") String name, @FormParam("url") String url,
+			@FormParam("requestType") String requestType, @FormParam("param") String param) {
 		List<Service> list = sdao.getLista();
-		
+
 		Service s = new Service();
-		
+
 		s.setId(id);
-		
-		
-		if( list.size()==0 ){
+
+		if (list.size() == 0) {
 			return null;
-			
+
 		}
-		
-		for(Service x : list){
-			System.out.println(x.getId()+" "+id);
-			if( x.getId()==id ){
+
+		for (Service x : list) {
+			System.out.println(x.getId() + " " + id);
+			if (x.getId() == id) {
 				x.setName(name);
 				x.setUrl(url);
 				x.setParam(param);
@@ -105,10 +94,8 @@ public class ServiceWs {
 				sdao.update(x);
 			}
 		}
-				
+
 		return sdao.getLista();
 	}
-	
+
 }
-
-
