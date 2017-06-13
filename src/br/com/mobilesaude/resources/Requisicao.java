@@ -63,22 +63,6 @@ public class Requisicao {
 	}
 
 	public void setResponse(int response) {
-		if (response == 200) {
-			setDetails("Service is operating normally");
-		}
-		if (response == 404) {
-			setDetails("Not found!");
-		}
-		if (response == 500) {
-			setDetails("Internal Server Error");
-		}
-		if (response == 503) {
-			setDetails("Service Unavailable");
-		}
-		if (response == 504) {
-			setDetails("Gateway Time-out");
-		}
-
 		this.response = response;
 	}
 

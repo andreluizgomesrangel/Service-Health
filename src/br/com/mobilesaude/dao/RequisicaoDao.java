@@ -1,4 +1,4 @@
- package br.com.mobilesaude.dao;
+package br.com.mobilesaude.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -176,15 +176,16 @@ public class RequisicaoDao {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public EstatisticasServicoDia getEstatisticas(String day, long id, int qtdServicos) {
 		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET
 		// ESTATISTICAS");
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT COUNT(ID) as QTD, RESPONSE FROM (SELECT id AS ID, time AS ");
-		sql.append("HORA, response AS RESPONSE FROM ping.requisicao WHERE idService='" + id + "' ");
-		sql.append("AND DATE(requisicao.time)='" + day + "' ORDER BY RESPONSE, ");
-		sql.append("requisicao.time DESC) tab GROUP BY RESPONSE; ");
+		sql.append(
+				"SELECT COUNT(ID) as QTD, RESPONSE, DETALHES FROM (SELECT id AS ID, time AS HORA, response AS RESPONSE, details as DETALHES FROM ");
+		sql.append("ping.requisicao WHERE idService='" + id + "' AND DATE(requisicao.time)='" + day
+				+ "' ORDER BY RESPONSE, requisicao.time DESC) tab GROUP BY ");
+		sql.append("RESPONSE, DETALHES;");
 
 		try {
 			EstatisticasServicoDia estatistica = new EstatisticasServicoDia(id, day);
@@ -194,7 +195,8 @@ public class RequisicaoDao {
 			List<TipoDeResposta> Respostas = new ArrayList<TipoDeResposta>();
 
 			while (rs.next()) {
-				TipoDeResposta resposta = new TipoDeResposta(rs.getInt("QTD"), rs.getInt("RESPONSE"), qtdServicos);
+				TipoDeResposta resposta = new TipoDeResposta(rs.getInt("QTD"), rs.getInt("RESPONSE"), qtdServicos,
+						rs.getString("DETALHES"));
 				Respostas.add(resposta);
 			}
 			rs.close();

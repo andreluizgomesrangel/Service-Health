@@ -19,16 +19,14 @@ import okhttp3.Response;
 
 public class Requisicoes {
 
-	
-	
 	RequisicaoDao dao;
 
 	public Requisicoes(RequisicaoDao requisicaoDao) {
 		dao = requisicaoDao;
-		
+
 	}
 
-	public int postRequest(Service s) {
+	public Resposta postRequest(Service s) {
 
 		int code = 0;
 		OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS)
@@ -45,24 +43,27 @@ public class Requisicoes {
 		// System.out.print( " post waiting..." );
 		Request request = new Request.Builder().url(s.getUrl()).post(formBody).build();
 
+		Resposta resposta = new Resposta();
+
 		try {
 
 			Response response = client.newCall(request).execute();
 			code = response.code();
-			System.out.println(" >>>>>>>  mensagem: " + response.message());
+			// System.out.println(" >>>>>>> mensagem: " + response.message());
+			resposta = new Resposta(code, response.message());
 			response.body().close();
 			response.close();
-			return code;
+			return resposta;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return code;
+		return resposta;
 	}
 
-	public int getRequest(Service s) {
+	public Resposta getRequest(Service s) {
 
 		int code = 0;
 		OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(3 * 60, TimeUnit.SECONDS)
@@ -72,21 +73,26 @@ public class Requisicoes {
 
 		// System.out.print( " get waiting..." );
 		Request request = new Request.Builder().url(s.getUrl()).get().build();
+
+		Resposta resposta = new Resposta();
+
 		try {
 
 			Response response = client.newCall(request).execute();
 			code = response.code();
-			System.out.println(" >>>>>>>  mensagem: " + response.message());
+
+			resposta = new Resposta(code, response.message());
+
 			response.body().close();
 			response.close();
-			return code;
+			return resposta;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return code;
+		return resposta;
 	}
 
 	public HashMap<String, String> getParam(String query) {
@@ -104,7 +110,7 @@ public class Requisicoes {
 	}
 
 	// Metodo responsavel por fazer uma requisicao
-	public int request(Service s) {
+	public Resposta request(Service s) {
 
 		if (s.getRequestType().equals("post")) {
 			return postRequest(s);
@@ -113,27 +119,25 @@ public class Requisicoes {
 			return getRequest(s);
 		}
 
-		return 0;
+		return null;
 
 	}
 
 	// faz uma requisicao e insere ela no bd
 	public Requisicao newRequest(Service s) {
 
-		int response = request(s);
+		Resposta resposta = request(s);
+		// int response = request(s);
 		Requisicao h = new Requisicao();
-		h.setResponse(response);
+		h.setResponse(resposta.getCode());
 		h.setIdService(s.getId());
-
-		insert(s.getId(), response);
+		h.setDetails(resposta.getMessage());
+		insert(h);
 
 		return h;
 	}
 
-	public void insert(long idService, int resp) {
-		Requisicao h = new Requisicao();
-		h.setIdService(idService);
-		h.setResponse(resp);
+	public void insert(Requisicao h) {
 
 		dao.add(h);
 	}
