@@ -36,7 +36,6 @@ public class RequisicaoDao {
 	ServiceDao sdao;
 
 	public RequisicaoDao() {
-		// fullGroupMode();
 	}
 
 	public List<Requisicao> getLista() {

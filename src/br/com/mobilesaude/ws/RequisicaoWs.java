@@ -31,10 +31,6 @@ public class RequisicaoWs {
 	@EJB
 	RequisicaoDao hdao;
 
-	/**
-	 * 
-	 * @return
-	 */
 	@GET
 	@Path("/teste")
 	@Produces(MediaType.APPLICATION_XML)
@@ -43,10 +39,6 @@ public class RequisicaoWs {
 		return h;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	@GET
 	@Path("/getList")
 	@Produces(MediaType.APPLICATION_XML)

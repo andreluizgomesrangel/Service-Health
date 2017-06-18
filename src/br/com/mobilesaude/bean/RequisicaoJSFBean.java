@@ -6,10 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 
 import javax.ejb.EJB;
 import javax.faces.application.Application;
@@ -18,8 +16,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.JAXBException;
 
 import br.com.mobilesaude.resources.EstatisticasServicoDia;
 import br.com.mobilesaude.resources.Requisicao;

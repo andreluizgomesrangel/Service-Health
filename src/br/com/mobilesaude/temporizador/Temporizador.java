@@ -19,7 +19,7 @@ public class Temporizador {
 	@EJB
 	VerificaStatusService verificaStatus;
 
-	@Schedule(second = "*/60", minute = "*", hour = "*")
+	@Schedule(minute = "1", persistent=false)
 	public void doWork() {
 		verificaStatus.verificarStatus();
 	}
